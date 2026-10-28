@@ -14,21 +14,27 @@ import java.util.Stack;
 @RequestMapping("/pila")
 public class PilaController {
 
-    @PostMapping
-    public String agregar(@RequestParam String valor) {
+    // Instancia de la pila que se mantiene en memoria mientras el servidor corre
+    private Stack<Character> chars = new Stack<>();
 
+    @PostMapping
+    public String agregar(@RequestParam Character valor) {
+        chars.push(valor);
         return "Se agrego: " + valor;
     }
 
     @GetMapping("/pop")
     public String sacar() {
-
-        return "La pila esta vacia";
+        // Evita que truene con EmptyStackException si la pila no tiene elementos
+        if (chars.isEmpty()) {
+            return "La pila esta vacia";
+        }
+        Character sacado = chars.pop();
+        return "Se quito: " + sacado;
     }
 
     @GetMapping
-    public List<String> verPila() {
-
-        return new ArrayList<>();
+    public Stack<Character> verPila() {
+        return chars;
     }
 }
